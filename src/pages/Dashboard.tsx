@@ -21,7 +21,7 @@ export default function Dashboard() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("appointments")
-        .select("*, patients(*), ai_summaries(summary_points)")
+        .select("*, patients(*, ai_summaries(summary_points))")
         .order("appointment_date", { ascending: true })
         .limit(20);
       if (error) throw error;
