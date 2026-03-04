@@ -157,7 +157,7 @@ export default function Dashboard() {
                 <TableBody>
                   {appointments.map((apt) => {
                     const patient = apt.patients;
-                    const summaryPoints = apt.ai_summaries?.[0]?.summary_points;
+                    const summaryPoints = (patient as any)?.ai_summaries?.[0]?.summary_points;
                     const summaryText = Array.isArray(summaryPoints)
                       ? (summaryPoints as string[]).slice(0, 2).join("; ")
                       : patient?.previous_diagnosis?.slice(0, 60) || "—";
