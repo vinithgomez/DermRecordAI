@@ -1,1 +1,10 @@
 project_id = "wudejwrdcxqiqqilmwhy"
+
+[functions.ai-summarize]
+verify_jwt = false
+
+[functions.ai-medical-hints]
+verify_jwt = false
+
+[functions.ai-report-polish]
+verify_jwt = false
