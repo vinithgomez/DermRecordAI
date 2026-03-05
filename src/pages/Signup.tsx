@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Heart } from "lucide-react";
+import { Heart, Home, LayoutDashboard } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Signup() {
@@ -37,7 +37,15 @@ export default function Signup() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
+      <div className="mb-4 flex gap-2">
+        <Button variant="outline" size="sm" asChild>
+          <Link to="/"><Home className="mr-1 h-4 w-4" /> Home</Link>
+        </Button>
+        <Button variant="outline" size="sm" asChild>
+          <Link to="/dashboard"><LayoutDashboard className="mr-1 h-4 w-4" /> Dashboard</Link>
+        </Button>
+      </div>
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-foreground">
