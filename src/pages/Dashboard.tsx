@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Users, CalendarDays, Activity, TrendingUp } from "lucide-react";
-import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { format } from "date-fns";
 
 const CHART_COLORS = [
@@ -76,13 +76,13 @@ export default function Dashboard() {
   const statCards = [
     { label: "Total Patients", value: stats?.totalPatients ?? 0, icon: Users, color: "text-primary" },
     { label: "Appointments", value: stats?.totalAppointments ?? 0, icon: CalendarDays, color: "text-accent" },
-    { label: "Pending", value: stats?.pendingAppointments ?? 0, icon: Activity, color: "text-warning" },
-    { label: "Records", value: stats?.totalRecords ?? 0, icon: TrendingUp, color: "text-success" },
+    { label: "Pending Consults", value: stats?.pendingAppointments ?? 0, icon: Activity, color: "text-warning" },
+    { label: "Clinical Records", value: stats?.totalRecords ?? 0, icon: TrendingUp, color: "text-success" },
   ];
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-foreground">Dashboard</h2>
+      <h2 className="text-2xl font-bold text-foreground">Dermatology Dashboard</h2>
 
       {/* Stat Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -117,7 +117,7 @@ export default function Dashboard() {
         </Card>
 
         <Card>
-          <CardHeader><CardTitle className="text-base">Diagnosis Categories</CardTitle></CardHeader>
+          <CardHeader><CardTitle className="text-base">Skin Condition Categories</CardTitle></CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
               <PieChart>
@@ -135,12 +135,12 @@ export default function Dashboard() {
 
       {/* Upcoming Schedule */}
       <Card>
-        <CardHeader><CardTitle className="text-base">Upcoming Patient Schedule</CardTitle></CardHeader>
+        <CardHeader><CardTitle className="text-base">Upcoming Dermatology Appointments</CardTitle></CardHeader>
         <CardContent>
           {loadingAppts ? (
             <p className="text-muted-foreground">Loading...</p>
           ) : !appointments?.length ? (
-            <p className="text-muted-foreground">No appointments yet. Upload a patient to get started.</p>
+            <p className="text-muted-foreground">No appointments yet. Register a patient to get started.</p>
           ) : (
             <div className="overflow-x-auto">
               <Table>
@@ -150,7 +150,7 @@ export default function Dashboard() {
                     <TableHead>Age</TableHead>
                     <TableHead>Gender</TableHead>
                     <TableHead>Date</TableHead>
-                    <TableHead>Previous Diagnosis</TableHead>
+                    <TableHead>Previous Condition</TableHead>
                     <TableHead>Status</TableHead>
                   </TableRow>
                 </TableHeader>

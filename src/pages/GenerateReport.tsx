@@ -38,7 +38,6 @@ export default function GenerateReport() {
     setLoading(true);
 
     try {
-      // 1. AI polish
       let aiSummary = null;
       try {
         const { data } = await supabase.functions.invoke("ai-report-polish", {
@@ -53,7 +52,6 @@ export default function GenerateReport() {
         console.warn("AI report polish failed");
       }
 
-      // 2. Save report
       const { data: reportData, error } = await supabase
         .from("reports")
         .insert({
@@ -71,7 +69,7 @@ export default function GenerateReport() {
       if (error) throw error;
 
       setReport({ ...reportData, aiSummary });
-      toast({ title: "Report generated", description: "Medical report created successfully." });
+      toast({ title: "Report generated", description: "Dermatology report created successfully." });
     } catch (err: any) {
       toast({ title: "Error", description: err.message, variant: "destructive" });
     } finally {
@@ -83,20 +81,20 @@ export default function GenerateReport() {
     if (!report) return;
     const patient = report.patients;
     const content = `
-MEDICAL REPORT
-==============
+DERMATOLOGY REPORT
+==================
 Patient: ${patient?.name || "N/A"}
 Age: ${patient?.age || "N/A"} | Gender: ${patient?.gender || "N/A"}
-Doctor: ${report.doctor_name}
+Dermatologist: ${report.doctor_name}
 Date: ${report.report_date}
 
-DIAGNOSIS NOTES
+SKIN CONDITION DIAGNOSIS
 ${report.diagnosis_notes || "N/A"}
 
-OBSERVATIONS
+EXAMINATION FINDINGS
 ${report.observations || "N/A"}
 
-PRESCRIPTION
+TREATMENT & PRESCRIPTION
 ${report.prescription_notes || "N/A"}
 
 AI SUMMARY
@@ -109,14 +107,14 @@ ${report.aiSummary?.diagnosis_points ? "DIAGNOSIS OVERVIEW\n" + (report.aiSummar
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `report-${patient?.name?.replace(/\s+/g, "-")}-${report.report_date}.txt`;
+    a.download = `derm-report-${patient?.name?.replace(/\s+/g, "-")}-${report.report_date}.txt`;
     a.click();
     URL.revokeObjectURL(url);
   };
 
   return (
     <div className="mx-auto max-w-2xl space-y-6">
-      <h2 className="text-2xl font-bold">Generate Report</h2>
+      <h2 className="text-2xl font-bold">Generate Dermatology Report</h2>
 
       <Card>
         <CardHeader><CardTitle>Report Details</CardTitle></CardHeader>
@@ -141,27 +139,27 @@ ${report.aiSummary?.diagnosis_points ? "DIAGNOSIS OVERVIEW\n" + (report.aiSummar
             </div>
 
             <div className="space-y-2">
-              <Label>Doctor Name *</Label>
-              <Input value={form.doctor_name} onChange={(e) => handleChange("doctor_name", e.target.value)} required />
+              <Label>Dermatologist Name *</Label>
+              <Input placeholder="Dr. Jane Smith" value={form.doctor_name} onChange={(e) => handleChange("doctor_name", e.target.value)} required />
             </div>
 
             <div className="space-y-2">
-              <Label>Diagnosis Notes</Label>
-              <Textarea value={form.diagnosis_notes} onChange={(e) => handleChange("diagnosis_notes", e.target.value)} rows={4} />
+              <Label>Skin Condition Diagnosis Notes</Label>
+              <Textarea placeholder="e.g., plaque psoriasis, moderate severity..." value={form.diagnosis_notes} onChange={(e) => handleChange("diagnosis_notes", e.target.value)} rows={4} />
             </div>
 
             <div className="space-y-2">
-              <Label>Observations</Label>
-              <Textarea value={form.observations} onChange={(e) => handleChange("observations", e.target.value)} rows={3} />
+              <Label>Examination Findings</Label>
+              <Textarea placeholder="e.g., well-demarcated erythematous plaques with silvery scale..." value={form.observations} onChange={(e) => handleChange("observations", e.target.value)} rows={3} />
             </div>
 
             <div className="space-y-2">
-              <Label>Prescription Notes</Label>
-              <Textarea value={form.prescription_notes} onChange={(e) => handleChange("prescription_notes", e.target.value)} rows={3} />
+              <Label>Treatment / Prescription Notes</Label>
+              <Textarea placeholder="e.g., topical corticosteroids, phototherapy schedule..." value={form.prescription_notes} onChange={(e) => handleChange("prescription_notes", e.target.value)} rows={3} />
             </div>
 
             <Button type="submit" className="w-full" disabled={loading || !patientId || !form.doctor_name}>
-              {loading ? "Generating..." : "Generate Report"}
+              {loading ? "Generating..." : "Generate Derm Report"}
             </Button>
           </form>
         </CardContent>
@@ -177,7 +175,7 @@ ${report.aiSummary?.diagnosis_points ? "DIAGNOSIS OVERVIEW\n" + (report.aiSummar
           </CardHeader>
           <CardContent className="space-y-3 text-sm">
             <p><span className="font-medium">Patient:</span> {report.patients?.name}</p>
-            <p><span className="font-medium">Doctor:</span> {report.doctor_name}</p>
+            <p><span className="font-medium">Dermatologist:</span> {report.doctor_name}</p>
             <p><span className="font-medium">Date:</span> {report.report_date}</p>
             {report.aiSummary?.summary && (
               <div>

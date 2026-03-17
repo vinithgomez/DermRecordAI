@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -41,12 +41,12 @@ export default function ViewPatients() {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold">View Patients</h2>
+      <h2 className="text-2xl font-bold">Dermatology Patients</h2>
 
       <div className="flex flex-wrap gap-4">
         <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input placeholder="Search by name..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-10" />
+          <Input placeholder="Search by patient name..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-10" />
         </div>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
           <SelectTrigger className="w-[160px]"><SelectValue /></SelectTrigger>
@@ -63,7 +63,7 @@ export default function ViewPatients() {
           {isLoading ? (
             <p className="text-muted-foreground">Loading patients...</p>
           ) : !patients?.length ? (
-            <p className="text-muted-foreground">No patients found.</p>
+            <p className="text-muted-foreground">No dermatology patients found.</p>
           ) : (
             <div className="overflow-x-auto">
               <Table>
@@ -73,7 +73,7 @@ export default function ViewPatients() {
                     <TableHead>Age</TableHead>
                     <TableHead>Gender</TableHead>
                     <TableHead>Contact</TableHead>
-                    <TableHead>Risk Level</TableHead>
+                    <TableHead>Severity</TableHead>
                     <TableHead>Added</TableHead>
                   </TableRow>
                 </TableHeader>

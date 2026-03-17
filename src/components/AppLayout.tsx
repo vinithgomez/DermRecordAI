@@ -27,7 +27,7 @@ export function AppLayout() {
         <div className="flex-1 flex flex-col">
           <header className="h-14 flex items-center border-b bg-card px-4">
             <SidebarTrigger className="mr-4" />
-            <h1 className="text-lg font-semibold text-foreground flex-1">MedRecord AI</h1>
+            <h1 className="text-lg font-semibold text-foreground flex-1">DermRecord AI</h1>
             <Button variant="ghost" size="sm" asChild>
               <Link to="/"><Home className="mr-1 h-4 w-4" /> Home</Link>
             </Button>

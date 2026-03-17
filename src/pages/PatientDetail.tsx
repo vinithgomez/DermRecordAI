@@ -66,17 +66,17 @@ export default function PatientDetail() {
 
       <div className="grid gap-6 md:grid-cols-2">
         <Card>
-          <CardHeader><CardTitle className="flex items-center gap-2"><FileText className="h-4 w-4" /> Patient Info</CardTitle></CardHeader>
+          <CardHeader><CardTitle className="flex items-center gap-2"><FileText className="h-4 w-4" /> Skin Profile</CardTitle></CardHeader>
           <CardContent className="space-y-2 text-sm">
             <p><span className="font-medium">Contact:</span> {patient.contact || "—"}</p>
-            <p><span className="font-medium">Symptoms:</span> {patient.symptoms || "—"}</p>
-            <p><span className="font-medium">Medical History:</span> {patient.medical_history || "—"}</p>
-            <p><span className="font-medium">Previous Diagnosis:</span> {patient.previous_diagnosis || "—"}</p>
+            <p><span className="font-medium">Skin Symptoms:</span> {patient.symptoms || "—"}</p>
+            <p><span className="font-medium">Dermatological History:</span> {patient.medical_history || "—"}</p>
+            <p><span className="font-medium">Previous Skin Conditions:</span> {patient.previous_diagnosis || "—"}</p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader><CardTitle className="flex items-center gap-2"><Brain className="h-4 w-4" /> AI Diagnosis Summary</CardTitle></CardHeader>
+          <CardHeader><CardTitle className="flex items-center gap-2"><Brain className="h-4 w-4" /> AI Skin Condition Summary</CardTitle></CardHeader>
           <CardContent>
             {summaryPoints.length > 0 ? (
               <ul className="list-disc space-y-1 pl-4 text-sm">
@@ -87,17 +87,17 @@ export default function PatientDetail() {
             )}
             {aiSummary?.risk_level && (
               <Badge className="mt-3" variant={aiSummary.risk_level === "high" || aiSummary.risk_level === "critical" ? "destructive" : "secondary"}>
-                Risk: {aiSummary.risk_level}
+                Severity: {aiSummary.risk_level}
               </Badge>
             )}
           </CardContent>
         </Card>
       </div>
 
-      {/* AI Medical Hints */}
+      {/* AI Dermatology Hints */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="flex items-center gap-2"><AlertTriangle className="h-4 w-4" /> Contextual Medical Hints</CardTitle>
+          <CardTitle className="flex items-center gap-2"><AlertTriangle className="h-4 w-4" /> Dermatology Differential Hints</CardTitle>
           <Button variant="outline" size="sm" onClick={fetchHints} disabled={loadingHints}>
             {loadingHints ? "Generating..." : "Get AI Hints"}
           </Button>
@@ -108,7 +108,7 @@ export default function PatientDetail() {
               {hints.context_notes && <p>{hints.context_notes}</p>}
               {hints.related_conditions && (
                 <div>
-                  <p className="font-medium">Related Conditions:</p>
+                  <p className="font-medium">Related Skin Conditions:</p>
                   <ul className="list-disc pl-4">{(hints.related_conditions as string[]).map((c: string, i: number) => <li key={i}>{c}</li>)}</ul>
                 </div>
               )}
@@ -120,14 +120,14 @@ export default function PatientDetail() {
               )}
               {hints.suggested_checks && (
                 <div>
-                  <p className="font-medium">Suggested Diagnostic Checks:</p>
+                  <p className="font-medium">Suggested Diagnostic Tests:</p>
                   <ul className="list-disc pl-4">{(hints.suggested_checks as string[]).map((s: string, i: number) => <li key={i}>{s}</li>)}</ul>
                 </div>
               )}
               <p className="text-xs text-muted-foreground italic">⚠️ Informational reference only. Not a substitute for clinical judgment.</p>
             </div>
           ) : (
-            <p className="text-sm text-muted-foreground">Click "Get AI Hints" for contextual medical reference.</p>
+            <p className="text-sm text-muted-foreground">Click "Get AI Hints" for differential diagnosis suggestions.</p>
           )}
         </CardContent>
       </Card>
@@ -135,7 +135,7 @@ export default function PatientDetail() {
       {/* Diagnosis Timeline */}
       {patient.diagnoses && patient.diagnoses.length > 0 && (
         <Card>
-          <CardHeader><CardTitle>Diagnosis Timeline</CardTitle></CardHeader>
+          <CardHeader><CardTitle>Skin Condition Timeline</CardTitle></CardHeader>
           <CardContent className="space-y-3">
             {patient.diagnoses.map((d: any, i: number) => (
               <div key={d.id}>
@@ -143,7 +143,7 @@ export default function PatientDetail() {
                 <div className="flex items-start justify-between">
                   <div>
                     <p className="text-sm font-medium">{d.summary || "No summary"}</p>
-                    <p className="text-xs text-muted-foreground">{d.category || "General"}</p>
+                    <p className="text-xs text-muted-foreground">{d.category || "General Dermatology"}</p>
                   </div>
                   <div className="text-right">
                     {d.risk_level && <Badge variant="secondary">{d.risk_level}</Badge>}
@@ -156,17 +156,17 @@ export default function PatientDetail() {
         </Card>
       )}
 
-      {/* Medical Records */}
+      {/* Clinical Records */}
       {patient.medical_records && patient.medical_records.length > 0 && (
         <Card>
-          <CardHeader><CardTitle>Medical Records</CardTitle></CardHeader>
+          <CardHeader><CardTitle>Dermatology Clinical Records</CardTitle></CardHeader>
           <CardContent className="space-y-3">
             {patient.medical_records.map((r: any) => (
               <div key={r.id} className="rounded-lg border p-3">
                 <p className="text-xs text-muted-foreground">{format(new Date(r.created_at), "MMM d, yyyy")}</p>
-                {r.symptoms && <p className="text-sm"><span className="font-medium">Symptoms:</span> {r.symptoms}</p>}
-                {r.observations && <p className="text-sm"><span className="font-medium">Observations:</span> {r.observations}</p>}
-                {r.raw_notes && <p className="text-sm"><span className="font-medium">Notes:</span> {r.raw_notes}</p>}
+                {r.symptoms && <p className="text-sm"><span className="font-medium">Skin Symptoms:</span> {r.symptoms}</p>}
+                {r.observations && <p className="text-sm"><span className="font-medium">Examination Findings:</span> {r.observations}</p>}
+                {r.raw_notes && <p className="text-sm"><span className="font-medium">Clinical Notes:</span> {r.raw_notes}</p>}
               </div>
             ))}
           </CardContent>
