@@ -13,11 +13,11 @@ serve(async (req) => {
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
 
-    const prompt = `Polish the following medical report into a clean, professional summary:
+    const prompt = `Polish the following dermatology report into a clean, professional summary:
 
-Diagnosis Notes: ${diagnosis_notes || "Not provided"}
-Observations: ${observations || "Not provided"}
-Prescription Notes: ${prescription_notes || "Not provided"}`;
+Skin Condition Diagnosis: ${diagnosis_notes || "Not provided"}
+Examination Findings: ${observations || "Not provided"}
+Treatment/Prescription Notes: ${prescription_notes || "Not provided"}`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -30,7 +30,7 @@ Prescription Notes: ${prescription_notes || "Not provided"}`;
         messages: [
           {
             role: "system",
-            content: "You are a medical report formatting assistant. Polish and structure medical notes into a clean, professional medical report summary. Be concise and accurate. Do not add information not present in the original notes.",
+            content: "You are a dermatology report formatting assistant. Polish and structure dermatological clinical notes into a clean, professional dermatology report summary. Focus on skin condition descriptions, lesion characteristics, differential diagnoses, and treatment plans. Be concise and accurate. Do not add information not present in the original notes.",
           },
           { role: "user", content: prompt },
         ],
@@ -38,23 +38,23 @@ Prescription Notes: ${prescription_notes || "Not provided"}`;
           type: "function",
           function: {
             name: "polished_report",
-            description: "Return a polished medical report summary",
+            description: "Return a polished dermatology report summary",
             parameters: {
               type: "object",
               properties: {
                 summary: {
                   type: "string",
-                  description: "Clean medical summary paragraph",
+                  description: "Clean dermatology summary paragraph",
                 },
                 diagnosis_points: {
                   type: "array",
                   items: { type: "string" },
-                  description: "Bullet-point diagnosis overview",
+                  description: "Bullet-point skin condition diagnosis overview",
                 },
                 key_observations: {
                   type: "array",
                   items: { type: "string" },
-                  description: "Key clinical observations",
+                  description: "Key dermatological examination observations",
                 },
               },
               required: ["summary", "diagnosis_points"],
