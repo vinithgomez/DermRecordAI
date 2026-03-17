@@ -6,7 +6,6 @@ import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
@@ -36,7 +35,6 @@ export default function CreateRecord() {
     setLoading(true);
 
     try {
-      // 1. Save raw record
       const { data: record, error } = await supabase
         .from("medical_records")
         .insert({
@@ -51,18 +49,16 @@ export default function CreateRecord() {
         .single();
       if (error) throw error;
 
-      // 2. AI processing
       try {
         const { data: aiData } = await supabase.functions.invoke("ai-summarize", {
           body: {
             patient_id: patientId,
             record_id: record.id,
-            text: `Symptoms: ${form.symptoms}\nObservations: ${form.observations}\nLab Results: ${form.lab_results}\nNotes: ${form.raw_notes}`,
+            text: `Skin Symptoms: ${form.symptoms}\nExamination Findings: ${form.observations}\nLab/Biopsy Results: ${form.lab_results}\nClinical Notes: ${form.raw_notes}`,
             type: "record",
           },
         });
 
-        // Update record with AI processed notes
         if (aiData) {
           await supabase.from("medical_records").update({ ai_processed_notes: aiData }).eq("id", record.id);
           setAiResult(aiData);
@@ -71,7 +67,7 @@ export default function CreateRecord() {
         console.warn("AI processing failed");
       }
 
-      toast({ title: "Record created", description: "Medical record saved and processed." });
+      toast({ title: "Record created", description: "Dermatology clinical record saved and processed." });
       if (!aiResult) navigate("/patients/" + patientId);
     } catch (err: any) {
       toast({ title: "Error", description: err.message, variant: "destructive" });
@@ -82,10 +78,10 @@ export default function CreateRecord() {
 
   return (
     <div className="mx-auto max-w-2xl space-y-6">
-      <h2 className="text-2xl font-bold">Create Medical Record</h2>
+      <h2 className="text-2xl font-bold">Create Dermatology Record</h2>
 
       <Card>
-        <CardHeader><CardTitle>Consultation Notes</CardTitle></CardHeader>
+        <CardHeader><CardTitle>Skin Examination Notes</CardTitle></CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
@@ -101,27 +97,27 @@ export default function CreateRecord() {
             </div>
 
             <div className="space-y-2">
-              <Label>Current Symptoms</Label>
-              <Textarea value={form.symptoms} onChange={(e) => handleChange("symptoms", e.target.value)} rows={3} />
+              <Label>Skin Symptoms & Complaints</Label>
+              <Textarea placeholder="e.g., itchy erythematous plaques, scaling, vesicles..." value={form.symptoms} onChange={(e) => handleChange("symptoms", e.target.value)} rows={3} />
             </div>
 
             <div className="space-y-2">
-              <Label>Observations</Label>
-              <Textarea value={form.observations} onChange={(e) => handleChange("observations", e.target.value)} rows={3} />
+              <Label>Examination Findings / Lesion Description</Label>
+              <Textarea placeholder="e.g., well-demarcated erythematous plaque with silvery scales on extensor surfaces..." value={form.observations} onChange={(e) => handleChange("observations", e.target.value)} rows={3} />
             </div>
 
             <div className="space-y-2">
-              <Label>Lab Results</Label>
-              <Textarea value={form.lab_results} onChange={(e) => handleChange("lab_results", e.target.value)} rows={3} />
+              <Label>Lab / Biopsy / Patch Test Results</Label>
+              <Textarea placeholder="e.g., skin biopsy shows acanthosis, KOH negative..." value={form.lab_results} onChange={(e) => handleChange("lab_results", e.target.value)} rows={3} />
             </div>
 
             <div className="space-y-2">
-              <Label>Diagnosis Notes</Label>
-              <Textarea value={form.raw_notes} onChange={(e) => handleChange("raw_notes", e.target.value)} rows={5} placeholder="Detailed diagnosis notes..." />
+              <Label>Clinical Diagnosis Notes</Label>
+              <Textarea value={form.raw_notes} onChange={(e) => handleChange("raw_notes", e.target.value)} rows={5} placeholder="Detailed dermatological diagnosis and treatment plan..." />
             </div>
 
             <Button type="submit" className="w-full" disabled={loading || !patientId}>
-              {loading ? "Saving & Processing..." : "Save Record"}
+              {loading ? "Saving & Processing..." : "Save Derm Record"}
             </Button>
           </form>
         </CardContent>
@@ -129,7 +125,7 @@ export default function CreateRecord() {
 
       {aiResult && (
         <Card>
-          <CardHeader><CardTitle>AI-Processed Notes</CardTitle></CardHeader>
+          <CardHeader><CardTitle>AI Skin Analysis</CardTitle></CardHeader>
           <CardContent className="space-y-3 text-sm">
             {aiResult.summary_points && (
               <div>
@@ -137,7 +133,7 @@ export default function CreateRecord() {
                 <ul className="list-disc pl-4">{(aiResult.summary_points as string[]).map((p: string, i: number) => <li key={i}>{p}</li>)}</ul>
               </div>
             )}
-            {aiResult.risk_level && <p><span className="font-medium">Risk Category:</span> {aiResult.risk_level}</p>}
+            {aiResult.risk_level && <p><span className="font-medium">Severity:</span> {aiResult.risk_level}</p>}
             <Button variant="outline" onClick={() => navigate("/patients/" + patientId)}>View Patient</Button>
           </CardContent>
         </Card>

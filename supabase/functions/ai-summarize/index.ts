@@ -15,8 +15,8 @@ serve(async (req) => {
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
 
     const systemPrompt = type === "record"
-      ? "You are a medical documentation assistant. Analyze the provided medical record and extract structured findings. Be medically neutral. Do not prescribe treatment. Return structured JSON via the tool call."
-      : "You are a medical documentation assistant. Summarize the provided previous diagnosis into concise bullet points. Be medically neutral. Do not prescribe treatment. Return structured JSON via the tool call.";
+      ? "You are a dermatology documentation assistant. Analyze the provided skin examination record and extract structured findings related to dermatological conditions (lesions, rashes, skin disorders). Be clinically neutral. Do not prescribe treatment. Return structured JSON via the tool call."
+      : "You are a dermatology documentation assistant. Summarize the provided previous skin condition diagnosis into concise bullet points relevant to dermatology. Be clinically neutral. Do not prescribe treatment. Return structured JSON via the tool call.";
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -34,28 +34,28 @@ serve(async (req) => {
           type: "function",
           function: {
             name: "medical_summary",
-            description: "Return a structured medical summary",
+            description: "Return a structured dermatology summary",
             parameters: {
               type: "object",
               properties: {
                 summary_points: {
                   type: "array",
                   items: { type: "string" },
-                  description: "3-5 concise bullet points summarizing key findings",
+                  description: "3-5 concise bullet points summarizing key dermatological findings",
                 },
                 risk_level: {
                   type: "string",
                   enum: ["low", "medium", "high", "critical"],
-                  description: "Overall risk assessment",
+                  description: "Overall severity assessment of the skin condition",
                 },
                 recommended_tests: {
                   type: "array",
                   items: { type: "string" },
-                  description: "Suggested diagnostic tests if applicable",
+                  description: "Suggested dermatological tests (biopsy, dermoscopy, patch test, KOH, etc.)",
                 },
                 context_notes: {
                   type: "string",
-                  description: "Brief contextual notes about the condition",
+                  description: "Brief contextual notes about the skin condition",
                 },
               },
               required: ["summary_points", "risk_level"],
@@ -95,7 +95,6 @@ serve(async (req) => {
       }
     }
 
-    // Store in ai_summaries table
     if (patient_id) {
       const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
       const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;

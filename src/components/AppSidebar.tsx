@@ -5,7 +5,7 @@ import {
   FilePlus,
   FileText,
   LogOut,
-  Heart,
+  Eye,
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useAuth } from "@/hooks/useAuth";
@@ -25,9 +25,9 @@ import {
 
 const navItems = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
-  { title: "Upload Patient", url: "/upload-patient", icon: UserPlus },
+  { title: "Register Patient", url: "/upload-patient", icon: UserPlus },
   { title: "View Patients", url: "/patients", icon: Users },
-  { title: "Create Record", url: "/create-record", icon: FilePlus },
+  { title: "Clinical Notes", url: "/create-record", icon: FilePlus },
   { title: "Generate Report", url: "/generate-report", icon: FileText },
 ];
 
@@ -41,12 +41,12 @@ export function AppSidebar() {
       <SidebarHeader className="border-b border-sidebar-border px-4 py-4">
         <div className="flex items-center gap-2">
           <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Heart className="h-4 w-4" />
+            <Eye className="h-4 w-4" />
           </div>
           {!collapsed && (
             <div className="flex flex-col">
-              <span className="text-sm font-semibold text-sidebar-foreground">MedRecord AI</span>
-              <span className="text-xs text-muted-foreground">Patient Management</span>
+              <span className="text-sm font-semibold text-sidebar-foreground">DermRecord AI</span>
+              <span className="text-xs text-muted-foreground">Dermatology Management</span>
             </div>
           )}
         </div>

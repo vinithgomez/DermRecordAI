@@ -21,6 +21,8 @@ import {
   Zap,
   Lock,
   Clock,
+  Eye,
+  Microscope,
 } from "lucide-react";
 
 const fadeUp: Variants = {
@@ -44,49 +46,49 @@ const scaleIn: Variants = {
 const features = [
   {
     icon: Brain,
-    title: "AI-Powered Summaries",
+    title: "AI Skin Analysis Summaries",
     description:
-      "Automatically generate concise diagnosis summaries with risk levels and recommended tests using advanced AI.",
+      "Automatically generate concise dermatological summaries with severity levels and recommended diagnostic tests using advanced AI.",
     color: "text-primary",
     bg: "bg-primary/10",
   },
   {
     icon: Users,
-    title: "Patient Management",
+    title: "Patient Skin Profile Management",
     description:
-      "Upload, search, and manage patient records with a clean, intuitive interface built for clinical workflows.",
+      "Upload, search, and manage patient dermatology records — skin type, lesion history, and treatment plans in one place.",
     color: "text-accent",
     bg: "bg-accent/10",
   },
   {
     icon: FileText,
-    title: "Report Generation",
+    title: "Dermatology Report Generation",
     description:
-      "Create professional medical reports with AI-polished summaries and download them instantly.",
+      "Create professional dermatology reports with AI-polished findings on skin conditions, biopsies, and treatment outcomes.",
     color: "text-warning",
     bg: "bg-warning/10",
   },
   {
     icon: BarChart3,
-    title: "Analytics Dashboard",
+    title: "Condition Analytics Dashboard",
     description:
-      "Visualize patient growth, diagnosis distributions, and appointment trends with interactive charts.",
+      "Visualize skin condition trends, diagnosis distributions (eczema, psoriasis, melanoma), and appointment patterns.",
     color: "text-chart-4",
     bg: "bg-primary/5",
   },
   {
     icon: ShieldCheck,
-    title: "Role-Based Access",
+    title: "Role-Based Clinic Access",
     description:
-      "Secure role-based authentication for doctors and admins with row-level data protection.",
+      "Secure role-based authentication for dermatologists and clinic admins with row-level patient data protection.",
     color: "text-success",
     bg: "bg-success/10",
   },
   {
-    icon: Upload,
-    title: "File Storage",
+    icon: Microscope,
+    title: "Biopsy & Lab File Storage",
     description:
-      "Upload and manage patient documents, lab results, and PDFs in a secure cloud storage bucket.",
+      "Upload and manage dermoscopy images, biopsy reports, patch test results, and lab PDFs in secure cloud storage.",
     color: "text-destructive",
     bg: "bg-destructive/10",
   },
@@ -96,34 +98,34 @@ const workflow = [
   {
     step: "01",
     icon: Upload,
-    title: "Upload Patient",
-    description: "Enter patient details and upload documents. An appointment is auto-created.",
+    title: "Register Patient",
+    description: "Enter patient skin profile, history of conditions, and upload dermoscopy images.",
   },
   {
     step: "02",
     icon: Brain,
-    title: "AI Analyzes",
-    description: "AI instantly generates diagnosis summaries, risk levels, and medical hints.",
+    title: "AI Skin Analysis",
+    description: "AI analyzes symptoms, generates condition summaries, severity levels, and differential diagnoses.",
   },
   {
     step: "03",
     icon: ClipboardList,
-    title: "Create Records",
-    description: "Add symptoms, observations, and lab results. AI structures your raw notes.",
+    title: "Clinical Notes",
+    description: "Add skin examination findings, lesion descriptions, lab/biopsy results. AI structures your notes.",
   },
   {
     step: "04",
     icon: FileText,
-    title: "Generate Report",
-    description: "Produce polished medical reports with AI summaries and download them.",
+    title: "Generate Derm Report",
+    description: "Produce polished dermatology reports with AI summaries, treatment plans, and follow-up recommendations.",
   },
 ];
 
 const stats = [
-  { label: "AI Models", value: "3+", icon: Sparkles },
-  { label: "Secure & Encrypted", value: "100%", icon: Lock },
-  { label: "Time Saved", value: "70%", icon: Clock },
-  { label: "Instant Insights", value: "Real-time", icon: Zap },
+  { label: "AI Derm Models", value: "3+", icon: Sparkles },
+  { label: "HIPAA-Ready", value: "100%", icon: Lock },
+  { label: "Documentation Time Saved", value: "70%", icon: Clock },
+  { label: "Instant Skin Insights", value: "Real-time", icon: Zap },
 ];
 
 export default function Index() {
@@ -141,10 +143,10 @@ export default function Index() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <div className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
-              <Heart className="h-5 w-5" />
+              <Eye className="h-5 w-5" />
             </div>
             <span className="text-xl font-bold tracking-tight text-foreground">
-              MedRecord AI
+              DermRecord AI
             </span>
           </div>
           <nav className="hidden items-center gap-6 text-sm font-medium text-muted-foreground md:flex">
@@ -180,7 +182,6 @@ export default function Index() {
 
       {/* ── Hero ── */}
       <section className="relative py-24 lg:py-32">
-        {/* Decorative gradient blobs */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 left-1/2 h-[500px] w-[700px] -translate-x-1/2 rounded-full bg-primary/5 blur-3xl" />
           <div className="absolute -bottom-40 right-0 h-[400px] w-[500px] rounded-full bg-accent/5 blur-3xl" />
@@ -193,7 +194,7 @@ export default function Index() {
           >
             <Badge variant="secondary" className="mb-6 px-4 py-1.5 text-sm font-medium">
               <Sparkles className="mr-1.5 h-3.5 w-3.5" />
-              AI-Powered Medical Platform
+              AI-Powered Dermatology Platform
             </Badge>
           </motion.div>
           <motion.h1
@@ -202,8 +203,8 @@ export default function Index() {
             transition={{ delay: 0.1, duration: 0.6 }}
             className="text-4xl font-extrabold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-6xl"
           >
-            Smarter Patient Records.{" "}
-            <span className="text-primary">Faster Diagnosis.</span>
+            Smarter Skin Records.{" "}
+            <span className="text-primary">Faster Dermatology Diagnosis.</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -211,9 +212,9 @@ export default function Index() {
             transition={{ delay: 0.2, duration: 0.6 }}
             className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground leading-relaxed"
           >
-            Streamline clinical workflows with AI-generated summaries, intelligent
-            medical hints, and professional report generation — all in one
-            secure, role-based platform.
+            Streamline your dermatology clinic with AI-generated skin condition summaries,
+            intelligent diagnostic hints, and professional report generation — all in one
+            secure, HIPAA-ready platform built for dermatologists.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -277,11 +278,11 @@ export default function Index() {
           >
             <Badge variant="outline" className="mb-4">Features</Badge>
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-              Everything You Need
+              Everything a Dermatologist Needs
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-              From patient intake to AI-assisted diagnosis — a complete toolkit
-              designed for modern healthcare professionals.
+              From patient skin profiles to AI-assisted diagnosis — a complete toolkit
+              designed for modern dermatology clinics.
             </p>
           </motion.div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -325,7 +326,7 @@ export default function Index() {
               How It Works
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-              Four simple steps from patient upload to professional report.
+              Four simple steps from patient intake to professional dermatology report.
             </p>
           </motion.div>
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
@@ -368,22 +369,22 @@ export default function Index() {
               custom={0}
             >
               <Badge variant="secondary" className="mb-4">
-                <Brain className="mr-1.5 h-3.5 w-3.5" /> AI Engine
+                <Brain className="mr-1.5 h-3.5 w-3.5" /> AI Derm Engine
               </Badge>
               <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-                Intelligent Medical Assistance
+                Intelligent Dermatology Assistance
               </h2>
               <p className="mt-4 text-muted-foreground leading-relaxed">
-                Our AI engine processes medical data to surface actionable
-                insights — from diagnosis summaries to contextual medical hints
-                — helping doctors make informed decisions faster.
+                Our AI engine processes skin condition data to surface actionable
+                insights — from lesion analysis summaries to differential diagnosis
+                hints — helping dermatologists make informed decisions faster.
               </p>
               <ul className="mt-8 space-y-4">
                 {[
-                  "Structured diagnosis summaries with risk levels",
-                  "Contextual hints for related conditions & tests",
-                  "AI-polished professional report generation",
-                  "Secure, privacy-first processing pipeline",
+                  "Structured skin condition summaries with severity levels",
+                  "Differential diagnosis hints for dermatological conditions",
+                  "AI-polished professional dermatology report generation",
+                  "Secure, HIPAA-ready privacy-first processing pipeline",
                 ].map((item, i) => (
                   <motion.li
                     key={i}
@@ -413,27 +414,27 @@ export default function Index() {
                   <div className="h-3 w-3 rounded-full bg-destructive/60" />
                   <div className="h-3 w-3 rounded-full bg-warning/60" />
                   <div className="h-3 w-3 rounded-full bg-success/60" />
-                  <span className="ml-2 text-xs text-muted-foreground">AI Summary Output</span>
+                  <span className="ml-2 text-xs text-muted-foreground">AI Skin Analysis Output</span>
                 </div>
                 <div className="space-y-3 rounded-lg bg-muted/60 p-4 font-mono text-xs text-foreground">
-                  <p className="text-muted-foreground">{"// AI-generated diagnosis summary"}</p>
+                  <p className="text-muted-foreground">{"// AI-generated dermatology summary"}</p>
                   <p>
                     <span className="text-primary">{"{"}</span>
                   </p>
                   <p className="pl-4">
-                    <span className="text-accent">"risk_level"</span>: <span className="text-warning">"medium"</span>,
+                    <span className="text-accent">"severity_level"</span>: <span className="text-warning">"moderate"</span>,
                   </p>
                   <p className="pl-4">
                     <span className="text-accent">"summary_points"</span>: [
                   </p>
-                  <p className="pl-8 text-muted-foreground">"Elevated blood pressure noted",</p>
-                  <p className="pl-8 text-muted-foreground">"History of Type 2 Diabetes",</p>
-                  <p className="pl-8 text-muted-foreground">"Recommend HbA1c follow-up"</p>
+                  <p className="pl-8 text-muted-foreground">"Erythematous scaly plaques on elbows",</p>
+                  <p className="pl-8 text-muted-foreground">"Consistent with plaque psoriasis",</p>
+                  <p className="pl-8 text-muted-foreground">"Recommend biopsy if refractory"</p>
                   <p className="pl-4">],</p>
                   <p className="pl-4">
                     <span className="text-accent">"recommended_tests"</span>: [
                   </p>
-                  <p className="pl-8 text-muted-foreground">"Lipid Panel", "Renal Function"</p>
+                  <p className="pl-8 text-muted-foreground">"Skin Biopsy", "Dermoscopy", "KOH Test"</p>
                   <p className="pl-4">]</p>
                   <p>
                     <span className="text-primary">{"}"}</span>
@@ -458,11 +459,11 @@ export default function Index() {
         >
           <Stethoscope className="mx-auto mb-4 h-10 w-10 text-primary" />
           <h2 className="text-3xl font-bold tracking-tight text-foreground">
-            Ready to Transform Your Practice?
+            Ready to Transform Your Dermatology Practice?
           </h2>
           <p className="mt-3 text-muted-foreground">
-            Join healthcare professionals using AI to streamline patient care,
-            reduce paperwork, and make faster clinical decisions.
+            Join dermatologists using AI to streamline skin condition documentation,
+            reduce paperwork, and deliver faster clinical decisions.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             {user ? (
@@ -491,11 +492,11 @@ export default function Index() {
       <footer className="border-t bg-card py-10">
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-6 text-center md:flex-row md:justify-between md:text-left">
           <div className="flex items-center gap-2">
-            <Heart className="h-4 w-4 text-primary" />
-            <span className="text-sm font-semibold text-foreground">MedRecord AI</span>
+            <Eye className="h-4 w-4 text-primary" />
+            <span className="text-sm font-semibold text-foreground">DermRecord AI</span>
           </div>
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} MedRecord AI. Built for healthcare professionals.
+            © {new Date().getFullYear()} DermRecord AI. Built for dermatology professionals.
           </p>
         </div>
       </footer>

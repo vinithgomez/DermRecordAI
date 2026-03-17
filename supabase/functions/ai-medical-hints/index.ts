@@ -13,12 +13,12 @@ serve(async (req) => {
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
 
-    const prompt = `Patient: ${patient_name || "Unknown"}
-Symptoms: ${symptoms || "Not provided"}
-Previous Diagnosis: ${previous_diagnosis || "Not provided"}
-Medical History: ${medical_history || "Not provided"}
+    const prompt = `Dermatology Patient: ${patient_name || "Unknown"}
+Skin Symptoms: ${symptoms || "Not provided"}
+Previous Skin Conditions: ${previous_diagnosis || "Not provided"}
+Dermatological History: ${medical_history || "Not provided"}
 
-Provide contextual medical hints for this patient.`;
+Provide contextual dermatology-specific hints for this patient's skin condition.`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -31,7 +31,7 @@ Provide contextual medical hints for this patient.`;
         messages: [
           {
             role: "system",
-            content: "You are a medical reference assistant. Provide informational medical context ONLY. Do NOT prescribe treatment or medication. Be medically neutral. Provide related conditions, risk indicators, and suggested diagnostic checks. This is for informational reference only.",
+            content: "You are a dermatology reference assistant. Provide informational dermatological context ONLY. Do NOT prescribe treatment or medication. Be clinically neutral. Focus on skin conditions, differential diagnoses for dermatological presentations, related skin disorders, risk indicators (sun exposure, family history, skin type), and suggested diagnostic checks (dermoscopy, biopsy, patch testing, KOH prep, Wood's lamp). This is for informational reference only.",
           },
           { role: "user", content: prompt },
         ],
@@ -39,28 +39,28 @@ Provide contextual medical hints for this patient.`;
           type: "function",
           function: {
             name: "medical_hints",
-            description: "Return contextual medical hints",
+            description: "Return contextual dermatology hints",
             parameters: {
               type: "object",
               properties: {
                 related_conditions: {
                   type: "array",
                   items: { type: "string" },
-                  description: "Related medical conditions to consider",
+                  description: "Related dermatological conditions to consider in differential diagnosis",
                 },
                 risk_indicators: {
                   type: "array",
                   items: { type: "string" },
-                  description: "Risk indicators based on patient profile",
+                  description: "Dermatological risk indicators (UV exposure, Fitzpatrick skin type, family history, immunosuppression)",
                 },
                 suggested_checks: {
                   type: "array",
                   items: { type: "string" },
-                  description: "Suggested diagnostic checks",
+                  description: "Suggested dermatological diagnostic checks (dermoscopy, biopsy, patch test, KOH, Wood's lamp)",
                 },
                 context_notes: {
                   type: "string",
-                  description: "Brief contextual explanation",
+                  description: "Brief contextual explanation of the dermatological presentation",
                 },
               },
               required: ["related_conditions", "risk_indicators", "suggested_checks", "context_notes"],

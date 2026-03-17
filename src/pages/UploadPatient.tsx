@@ -29,7 +29,6 @@ export default function UploadPatient() {
     setLoading(true);
 
     try {
-      // 1. Insert patient
       const { data: patient, error: patientError } = await supabase
         .from("patients")
         .insert({
@@ -46,31 +45,27 @@ export default function UploadPatient() {
         .single();
       if (patientError) throw patientError;
 
-      // 2. Create appointment
       await supabase.from("appointments").insert({
         patient_id: patient.id,
         created_by: user.id,
       });
 
-      // 3. Upload file if provided
       if (file) {
         const filePath = `${user.id}/${patient.id}/${file.name}`;
         await supabase.storage.from("patient-files").upload(filePath, file);
       }
 
-      // 4. Trigger AI summarization if previous diagnosis exists
       if (form.previous_diagnosis) {
         try {
           await supabase.functions.invoke("ai-summarize", {
             body: { patient_id: patient.id, text: form.previous_diagnosis },
           });
         } catch {
-          // AI is non-blocking, don't fail the upload
           console.warn("AI summarization failed, continuing...");
         }
       }
 
-      toast({ title: "Patient added to schedule", description: `${form.name} has been registered successfully.` });
+      toast({ title: "Patient registered", description: `${form.name} has been added to your dermatology schedule.` });
       navigate("/dashboard");
     } catch (err: any) {
       toast({ title: "Error", description: err.message, variant: "destructive" });
@@ -81,14 +76,14 @@ export default function UploadPatient() {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <h2 className="mb-6 text-2xl font-bold">Upload Patient</h2>
+      <h2 className="mb-6 text-2xl font-bold">Register Dermatology Patient</h2>
       <Card>
-        <CardHeader><CardTitle>Patient Information</CardTitle></CardHeader>
+        <CardHeader><CardTitle>Patient Skin Profile</CardTitle></CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="name">Name *</Label>
+                <Label htmlFor="name">Patient Name *</Label>
                 <Input id="name" value={form.name} onChange={(e) => handleChange("name", e.target.value)} required />
               </div>
               <div className="space-y-2">
@@ -116,27 +111,27 @@ export default function UploadPatient() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="symptoms">Symptoms</Label>
-              <Textarea id="symptoms" value={form.symptoms} onChange={(e) => handleChange("symptoms", e.target.value)} rows={3} />
+              <Label htmlFor="symptoms">Skin Symptoms / Complaints</Label>
+              <Textarea id="symptoms" placeholder="e.g., itchy red patches on elbows, persistent acne on cheeks..." value={form.symptoms} onChange={(e) => handleChange("symptoms", e.target.value)} rows={3} />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="previous_diagnosis">Previous Diagnosis</Label>
-              <Textarea id="previous_diagnosis" value={form.previous_diagnosis} onChange={(e) => handleChange("previous_diagnosis", e.target.value)} rows={3} />
+              <Label htmlFor="previous_diagnosis">Previous Skin Conditions / Diagnosis</Label>
+              <Textarea id="previous_diagnosis" placeholder="e.g., eczema, psoriasis, contact dermatitis..." value={form.previous_diagnosis} onChange={(e) => handleChange("previous_diagnosis", e.target.value)} rows={3} />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="medical_history">Medical History</Label>
-              <Textarea id="medical_history" value={form.medical_history} onChange={(e) => handleChange("medical_history", e.target.value)} rows={3} />
+              <Label htmlFor="medical_history">Dermatological History & Allergies</Label>
+              <Textarea id="medical_history" placeholder="e.g., family history of melanoma, drug allergies, previous treatments..." value={form.medical_history} onChange={(e) => handleChange("medical_history", e.target.value)} rows={3} />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="file">Upload Report (PDF)</Label>
-              <Input id="file" type="file" accept=".pdf" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
+              <Label htmlFor="file">Upload Report / Dermoscopy Image (PDF)</Label>
+              <Input id="file" type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
             </div>
 
             <Button type="submit" className="w-full" disabled={loading || !form.gender}>
-              {loading ? "Uploading..." : "Upload Patient"}
+              {loading ? "Registering..." : "Register Patient"}
             </Button>
           </form>
         </CardContent>
