@@ -14,6 +14,7 @@ import ViewPatients from "./pages/ViewPatients";
 import PatientDetail from "./pages/PatientDetail";
 import CreateRecord from "./pages/CreateRecord";
 import GenerateReport from "./pages/GenerateReport";
+import EditPatient from "./pages/EditPatient";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
