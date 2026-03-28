@@ -17,9 +17,19 @@ import { Brain, AlertTriangle, FileText, Pencil, Plus, Trash2 } from "lucide-rea
 
 export default function PatientDetail() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   const [loadingHints, setLoadingHints] = useState(false);
   const [hints, setHints] = useState<any>(null);
+
+  // Progress note form
+  const [showNoteForm, setShowNoteForm] = useState(false);
+  const [noteLoading, setNoteLoading] = useState(false);
+  const [noteForm, setNoteForm] = useState({
+    note: "", status: "ongoing", severity: "", treatment_given: "", next_steps: "",
+  });
 
   const { data: patient, isLoading } = useQuery({
     queryKey: ["patient", id],
