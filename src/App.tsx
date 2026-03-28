@@ -14,6 +14,7 @@ import ViewPatients from "./pages/ViewPatients";
 import PatientDetail from "./pages/PatientDetail";
 import CreateRecord from "./pages/CreateRecord";
 import GenerateReport from "./pages/GenerateReport";
+import EditPatient from "./pages/EditPatient";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ const App = () => (
               <Route path="/upload-patient" element={<UploadPatient />} />
               <Route path="/patients" element={<ViewPatients />} />
               <Route path="/patients/:id" element={<PatientDetail />} />
+              <Route path="/patients/:id/edit" element={<EditPatient />} />
               <Route path="/create-record" element={<CreateRecord />} />
               <Route path="/generate-report" element={<GenerateReport />} />
             </Route>

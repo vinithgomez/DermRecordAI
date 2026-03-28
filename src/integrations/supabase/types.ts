@@ -264,6 +264,53 @@ export type Database = {
         }
         Relationships: []
       }
+      progress_notes: {
+        Row: {
+          created_at: string
+          created_by: string
+          id: string
+          next_steps: string | null
+          note: string
+          patient_id: string
+          severity: string | null
+          status: string
+          treatment_given: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          id?: string
+          next_steps?: string | null
+          note: string
+          patient_id: string
+          severity?: string | null
+          status?: string
+          treatment_given?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          id?: string
+          next_steps?: string | null
+          note?: string
+          patient_id?: string
+          severity?: string | null
+          status?: string
+          treatment_given?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "progress_notes_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reports: {
         Row: {
           ai_summary: Json | null
