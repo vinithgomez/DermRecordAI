@@ -9,12 +9,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { Sparkles, Loader2 } from "lucide-react";
 
 export default function CreateRecord() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [aiLoading, setAiLoading] = useState(false);
   const [patientId, setPatientId] = useState("");
   const [form, setForm] = useState({ symptoms: "", observations: "", lab_results: "", raw_notes: "" });
   const [aiResult, setAiResult] = useState<any>(null);
@@ -28,6 +30,33 @@ export default function CreateRecord() {
   });
 
   const handleChange = (field: string, value: string) => setForm((f) => ({ ...f, [field]: value }));
+
+  const handleAiAutofill = async () => {
+    if (!patientId) {
+      toast({ title: "Select a patient first", variant: "destructive" });
+      return;
+    }
+    setAiLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("ai-autofill", {
+        body: { patient_id: patientId, mode: "record" },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+
+      setForm({
+        symptoms: data.symptoms || form.symptoms,
+        observations: data.observations || form.observations,
+        lab_results: data.lab_results || form.lab_results,
+        raw_notes: data.raw_notes || form.raw_notes,
+      });
+      toast({ title: "AI Notes Generated", description: "Clinical notes pre-filled from patient history. Review and edit as needed." });
+    } catch (err: any) {
+      toast({ title: "AI Autofill Failed", description: err.message, variant: "destructive" });
+    } finally {
+      setAiLoading(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,7 +110,22 @@ export default function CreateRecord() {
       <h2 className="text-2xl font-bold">Create Dermatology Record</h2>
 
       <Card>
-        <CardHeader><CardTitle>Skin Examination Notes</CardTitle></CardHeader>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle>Skin Examination Notes</CardTitle>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={handleAiAutofill}
+              disabled={aiLoading || !patientId}
+              className="gap-2"
+            >
+              {aiLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+              {aiLoading ? "Generating..." : "AI Auto-fill from History"}
+            </Button>
+          </div>
+        </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
