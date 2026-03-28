@@ -45,6 +45,55 @@ export default function PatientDetail() {
     enabled: !!id,
   });
 
+  const { data: progressNotes } = useQuery({
+    queryKey: ["progress-notes", id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("progress_notes")
+        .select("*")
+        .eq("patient_id", id!)
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!id,
+  });
+
+  const handleAddNote = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user || !id) return;
+    setNoteLoading(true);
+    try {
+      const { error } = await supabase.from("progress_notes").insert({
+        patient_id: id,
+        created_by: user.id,
+        note: noteForm.note,
+        status: noteForm.status,
+        severity: noteForm.severity || null,
+        treatment_given: noteForm.treatment_given || null,
+        next_steps: noteForm.next_steps || null,
+      });
+      if (error) throw error;
+      toast({ title: "Progress note added" });
+      setNoteForm({ note: "", status: "ongoing", severity: "", treatment_given: "", next_steps: "" });
+      setShowNoteForm(false);
+      queryClient.invalidateQueries({ queryKey: ["progress-notes", id] });
+    } catch (err: any) {
+      toast({ title: "Error", description: err.message, variant: "destructive" });
+    } finally {
+      setNoteLoading(false);
+    }
+  };
+
+  const handleDeleteNote = async (noteId: string) => {
+    const { error } = await supabase.from("progress_notes").delete().eq("id", noteId);
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    } else {
+      queryClient.invalidateQueries({ queryKey: ["progress-notes", id] });
+    }
+  };
+
   const fetchHints = async () => {
     if (!patient) return;
     setLoadingHints(true);
