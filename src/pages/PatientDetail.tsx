@@ -241,6 +241,108 @@ export default function PatientDetail() {
           </CardContent>
         </Card>
       )}
+
+      {/* Treatment Progress Notes */}
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle className="flex items-center gap-2"><Plus className="h-4 w-4" /> Treatment Progress</CardTitle>
+          <Button variant="outline" size="sm" onClick={() => setShowNoteForm(!showNoteForm)}>
+            {showNoteForm ? "Cancel" : "Add Progress Note"}
+          </Button>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {showNoteForm && (
+            <form onSubmit={handleAddNote} className="space-y-3 rounded-lg border border-dashed p-4">
+              <div className="space-y-2">
+                <Label>Progress Note *</Label>
+                <Textarea
+                  placeholder="Describe the current condition, changes observed..."
+                  value={noteForm.note}
+                  onChange={(e) => setNoteForm((f) => ({ ...f, note: e.target.value }))}
+                  rows={3}
+                  required
+                />
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label>Status</Label>
+                  <Select value={noteForm.status} onValueChange={(v) => setNoteForm((f) => ({ ...f, status: v }))}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="ongoing">Ongoing</SelectItem>
+                      <SelectItem value="improving">Improving</SelectItem>
+                      <SelectItem value="worsening">Worsening</SelectItem>
+                      <SelectItem value="resolved">Resolved</SelectItem>
+                      <SelectItem value="stable">Stable</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label>Severity</Label>
+                  <Select value={noteForm.severity} onValueChange={(v) => setNoteForm((f) => ({ ...f, severity: v }))}>
+                    <SelectTrigger><SelectValue placeholder="Select severity" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="mild">Mild</SelectItem>
+                      <SelectItem value="moderate">Moderate</SelectItem>
+                      <SelectItem value="severe">Severe</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label>Treatment Given</Label>
+                <Textarea
+                  placeholder="e.g., topical corticosteroid, phototherapy session..."
+                  value={noteForm.treatment_given}
+                  onChange={(e) => setNoteForm((f) => ({ ...f, treatment_given: e.target.value }))}
+                  rows={2}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Next Steps / Follow-up</Label>
+                <Textarea
+                  placeholder="e.g., review in 2 weeks, switch to calcineurin inhibitor..."
+                  value={noteForm.next_steps}
+                  onChange={(e) => setNoteForm((f) => ({ ...f, next_steps: e.target.value }))}
+                  rows={2}
+                />
+              </div>
+              <Button type="submit" disabled={noteLoading || !noteForm.note} className="w-full">
+                {noteLoading ? "Saving..." : "Save Progress Note"}
+              </Button>
+            </form>
+          )}
+
+          {progressNotes && progressNotes.length > 0 ? (
+            progressNotes.map((note: any, i: number) => (
+              <div key={note.id}>
+                {i > 0 && <Separator className="my-3" />}
+                <div className="flex items-start justify-between">
+                  <div className="flex-1 space-y-1">
+                    <div className="flex items-center gap-2">
+                      <Badge variant={
+                        note.status === "resolved" ? "default" :
+                        note.status === "improving" ? "secondary" :
+                        note.status === "worsening" ? "destructive" : "outline"
+                      } className="capitalize">{note.status}</Badge>
+                      {note.severity && <Badge variant="outline" className="capitalize">{note.severity}</Badge>}
+                      <span className="text-xs text-muted-foreground">{format(new Date(note.created_at), "MMM d, yyyy")}</span>
+                    </div>
+                    <p className="text-sm">{note.note}</p>
+                    {note.treatment_given && <p className="text-sm"><span className="font-medium">Treatment:</span> {note.treatment_given}</p>}
+                    {note.next_steps && <p className="text-sm"><span className="font-medium">Next Steps:</span> {note.next_steps}</p>}
+                  </div>
+                  <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" onClick={() => handleDeleteNote(note.id)}>
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            ))
+          ) : (
+            !showNoteForm && <p className="text-sm text-muted-foreground">No progress notes yet. Click "Add Progress Note" to start tracking treatment progress.</p>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }
