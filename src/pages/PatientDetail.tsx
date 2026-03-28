@@ -125,7 +125,12 @@ export default function PatientDetail() {
     <div className="mx-auto max-w-4xl space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold">{patient.name}</h2>
-        <Badge variant="secondary" className="capitalize">{patient.gender}, {patient.age}y</Badge>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" className="gap-1" onClick={() => navigate(`/patients/${id}/edit`)}>
+            <Pencil className="h-4 w-4" /> Edit Patient
+          </Button>
+          <Badge variant="secondary" className="capitalize">{patient.gender}, {patient.age}y</Badge>
+        </div>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
