@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import { AppLayout } from "@/components/AppLayout";
 import Index from "./pages/Index";
@@ -15,6 +15,8 @@ import PatientDetail from "./pages/PatientDetail";
 import CreateRecord from "./pages/CreateRecord";
 import GenerateReport from "./pages/GenerateReport";
 import EditPatient from "./pages/EditPatient";
+import AIDiagnosis from "./pages/AIDiagnosis";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -38,6 +40,8 @@ const App = () => (
               <Route path="/patients/:id/edit" element={<EditPatient />} />
               <Route path="/create-record" element={<CreateRecord />} />
               <Route path="/generate-report" element={<GenerateReport />} />
+              <Route path="/ai-diagnosis" element={<AIDiagnosis />} />
+              <Route path="/settings" element={<Settings />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
