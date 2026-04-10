@@ -30,7 +30,7 @@ const mainNav = [
   { title: "Patients", url: "/patients", icon: Users },
   { title: "New Case", url: "/upload-patient", icon: FilePlus },
   { title: "AI Diagnosis", url: "/ai-diagnosis", icon: Brain },
-  { title: "Records History", url: "/create-record", icon: History },
+  { title: "Create Record", url: "/create-record", icon: History },
   { title: "Reports", url: "/generate-report", icon: FileText },
   { title: "Settings", url: "/settings", icon: Settings },
 ];
