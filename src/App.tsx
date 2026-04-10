@@ -17,6 +17,8 @@ import GenerateReport from "./pages/GenerateReport";
 import EditPatient from "./pages/EditPatient";
 import AIDiagnosis from "./pages/AIDiagnosis";
 import Settings from "./pages/Settings";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
